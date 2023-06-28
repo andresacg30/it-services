@@ -42,7 +42,7 @@
                 "city": "Atlanta",
                 "region": "Georgia",
                 "country": "US",
-                "loc": "33.7490,-84.3880",
+                "loc": "92.290,-24.7850",
                 "org": "AS7922 Comcast Cable Communications, LLC",
                 "postal": "30318",
                 "timezone": "America/New_York"
