@@ -1,0 +1,20 @@
+@startuml System Architecture Diagram
+
+"Client" as client
+rectangle "API Gateway" as gateway
+rectangle "Base Service (Factory)" as base_service
+
+client -- gateway
+gateway -- base_service
+base_service -- [DocumentService]
+base_service -- [AudioService]
+base_service -- [TranslationService]
+base_service -- [UserInfoService]
+[DocumentService] -- [PDF To Word]
+[DocumentService] -- [PDF To JPG]
+[AudioService] -- [MP3 To WAV]
+[AudioService] -- [MP3 To Text]
+[TranslationService] -- [Text To Text]
+[UserInfoService] -- [User Info]
+
+@enduml

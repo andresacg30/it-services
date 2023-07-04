@@ -1,0 +1,80 @@
+@startuml Class Diagram
+
+class APIGateway {
+  + processRequest()
+}
+
+class BaseService {
+  {abstract} + createServiceInstance()
+}
+
+class DocumentService {
+  + processFile()
+}
+
+class AudioService {
+  + processFile()
+}
+
+class TranslationService {
+  + processFile()
+}
+
+class UserInfoService {
+  + processFile()
+}
+
+class PDFToWordService {
+  + processFile()
+}
+
+class PDFToJPGService {
+  + processFile()
+}
+
+class MP3ToWAVService {
+  + processFile()
+}
+
+class MP3ToTextService {
+  + processFile()
+}
+
+class TextToTextService {
+  + processFile()
+}
+
+class UserInfo {
+  - ip: string
+  - hostname: string
+  - city: string
+  - region: string
+  - country: string
+  - loc: string
+  - org: string
+  - postal: string
+  - timezone: string
+  + getIP()
+  + getHostname()
+  + getCity()
+  + getRegion()
+  + getCountry()
+  + getLocation()
+  + getOrganization()
+  + getPostal()
+  + getTimezone()
+}
+
+APIGateway --> BaseService
+BaseService <|-- DocumentService
+BaseService <|-- AudioService
+BaseService <|-- TranslationService
+BaseService <|-- UserInfoService
+DocumentService <|-- PDFToWordService
+DocumentService <|-- PDFToJPGService
+AudioService <|-- MP3ToWAVService
+AudioService <|-- MP3ToTextService
+TranslationService <|-- TextToTextService
+UserInfoService <|-- UserInfo
+
+@enduml

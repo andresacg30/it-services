@@ -1,0 +1,23 @@
+@startuml Sequence Diagram - PDF to Word Conversion
+
+actor Client
+participant APIGateway
+participant BaseService
+participant DocumentService
+participant PDFToWord
+
+Client -> APIGateway: Request for PDF to Word Conversion
+APIGateway -> BaseService: create-service("pdf-to-word")
+BaseService -> DocumentService: process-file("pdf-to-word")
+DocumentService -> PDFToWord: process-file("pdf-to-word")
+
+activate PDFToWord
+PDFToWord -> PDFToWord: Convert PDF to Word
+deactivate PDFToWord
+
+DocumentService <-- PDFToWord: File Converted
+BaseService <-- DocumentService: File Converted
+APIGateway <-- BaseService: File Converted
+Client <-- APIGateway: File Converted
+
+@enduml
