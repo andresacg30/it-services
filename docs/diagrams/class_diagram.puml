@@ -1,71 +1,66 @@
 @startuml Class Diagram
 
 class APIGateway {
-  + processRequest()
+  + process_job()
+}
+
+class Factory {
+  + register()
+  + create_service_instance()
 }
 
 class BaseService {
-  {abstract} + createServiceInstance()
+  {abstract} + process_job()
+  {abstract} + export_job()
 }
 
 class DocumentService {
-  + processFile()
+  + process_job()
+  + export_job()
 }
 
 class AudioService {
-  + processFile()
+  + process_job()
+  + export_job()
 }
 
 class TranslationService {
-  + processFile()
+  + process_job()
+  + export_job()
 }
 
 class UserInfoService {
-  + processFile()
+  + process_job()
+  + export_job()
 }
 
 class PDFToWordService {
-  + processFile()
+  + process_job()
+  + export_job()
 }
 
 class PDFToJPGService {
-  + processFile()
+  + process_job()
+  + export_job()
 }
 
 class MP3ToWAVService {
-  + processFile()
+  + process_job()
+  + export_job()
 }
 
 class MP3ToTextService {
-  + processFile()
-}
-
-class TextToTextService {
-  + processFile()
+  + process_job()
+  + export_job()
 }
 
 class UserInfo {
-  - ip: string
-  - hostname: string
-  - city: string
-  - region: string
-  - country: string
-  - loc: string
-  - org: string
-  - postal: string
-  - timezone: string
-  + getIP()
-  + getHostname()
-  + getCity()
-  + getRegion()
-  + getCountry()
-  + getLocation()
-  + getOrganization()
-  + getPostal()
-  + getTimezone()
+  + process_job()
+  + export_job()
 }
 
-APIGateway --> BaseService
+APIGateway --> Factory
+Factory --> BaseService
 BaseService <|-- DocumentService
 BaseService <|-- AudioService
 BaseService <|-- TranslationService

@@ -2,10 +2,12 @@
 
 "Client" as client
 rectangle "API Gateway" as gateway
-rectangle "Base Service (Factory)" as base_service
+rectangle "Base Service" as base_service
+rectangle "Factory" as factory
 
 client -- gateway
-gateway -- base_service
+gateway -- factory
+factory -- base_service
 base_service -- [DocumentService]
 base_service -- [AudioService]
 base_service -- [TranslationService]

@@ -2,17 +2,19 @@
 
 actor Client
 participant APIGateway
+participant Factory
 participant BaseService
 participant DocumentService
 participant PDFToWord
 
-Client -> APIGateway: Request for PDF to Word Conversion
-APIGateway -> BaseService: create-service("pdf-to-word")
-BaseService -> DocumentService: process-file("pdf-to-word")
-DocumentService -> PDFToWord: process-file("pdf-to-word")
+DocumentService -> Factory: register("pdf-to-word", DocumentService)
+Client -> APIGateway: POST /api/process-job?job-type=pdf-to-word
+APIGateway -> Factory: create_service_instance("pdf-to-word")
+APIGateway -> BaseService: process_file("pdf-to-word")
+BaseService -> PDFToWord: process_file("pdf-to-word")
 
 activate PDFToWord
-PDFToWord -> PDFToWord: Convert PDF to Word
+PDFToWord -> PDFToWord: export_file()
 deactivate PDFToWord
 
 DocumentService <-- PDFToWord: File Converted
