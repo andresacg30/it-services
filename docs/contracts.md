@@ -57,9 +57,9 @@
     - Content-Type: application/json
     - X-API-Key: (Secret)
 - **Body**:
-    - file: file
+    - file: bytes
 - **Response**:
-    - file: file
+    - file: bytes
   
 - **Example**
     - Request `POST /api/process-job?jobType=pdf-to-word`:
