@@ -51,7 +51,7 @@
     ```
 
 ### **/api/process-job?jobType** `POST`:
-> This endpoint is going to process the job and return the result. It can have different job types which are going to be requested in the query string.
+> This endpoint is going to process the job and return the result. Jobs are done by the different services. It can get different job types depending on the service which are going to be requested in the query string along with the service name.
 
 - **Headers**:
     - Content-Type: application/json
@@ -62,7 +62,7 @@
     - file: bytes
   
 - **Example**
-    - Request `POST /api/process-job?jobType=pdf-to-word`:
+    - Request `POST /api/process-job?service=document&job=pdf-to-word`:
     ```json
         {
             "file": "file.pdf"
@@ -71,6 +71,6 @@
     - Response:
     ```json
         {
-            "file": "file.word"
+            "file": "file.docx"
         }
     ```

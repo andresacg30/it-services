@@ -1,7 +1,5 @@
 import pytest
-from fastapi.testclient import TestClient
 
-from app.gateway import app
 from app.services.base_service import BaseService
 
 
@@ -14,10 +12,5 @@ class MockService(BaseService):
 
 
 @pytest.fixture
-def client():
-    return TestClient(app)
-
-
-@pytest.fixture
 def MockerService():
-    return MockService
+    return MockService()
