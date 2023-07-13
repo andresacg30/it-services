@@ -1,12 +1,5 @@
-from .base_service.base_service import BaseService
-
-
-class InvalidServiceNameError(Exception):
-    pass
-
-
-class ServiceConfigError(Exception):
-    pass
+from app.utils.exceptions import InvalidServiceNameError, ServiceConfigError
+from .base_config.base_service import BaseService
 
 
 class Factory:
@@ -25,3 +18,6 @@ class Factory:
         if not service:
             raise InvalidServiceNameError("Invalid service name")
         return service
+
+    def get_services(self):
+        return self._services

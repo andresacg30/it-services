@@ -1,6 +1,3 @@
-from app.services.main import BaseService
-
-
 def test__process_job__returns_400_error__when_no_service_is_provided(
     client
 ):
@@ -23,7 +20,7 @@ def test__process_job__returns_400_error__when_no_job_is_provided(
     assert response.headers["content-type"] == "application/json"
 
 
-def test__process_job__returns_400_error__when_no_service_or_job_is_provided(
+def test__process_job__returns_400_error__when_no_service_nor_job_is_provided(
     client
 ):
     response = client.post("/api/process-job?service=&job=")
@@ -33,9 +30,10 @@ def test__process_job__returns_400_error__when_no_service_or_job_is_provided(
     assert response.headers["content-type"] == "application/json"
 
 
-def test__process_job__raises_exception__when_job_type_not_found(
-    client
+def test__process_job__returns_400_error__when_service_not_found(
+    client,
 ):
+
     response = client.post("/api/process-job?service=not_found&job=test")
 
     assert response.status_code == 400
@@ -45,19 +43,21 @@ def test__process_job__raises_exception__when_job_type_not_found(
 
 def test__process_job__returns_file__when_job_type_found(
     client,
-    mocker
+    mocker,
+    MockerService
 ):
-    service = mocker.create_autospec(BaseService)
+    service = mocker.create_autospec(MockerService)
+
     service.process_job.return_value = None
     service.export_job.return_value = "mock_file"
     mocker.patch(
-        "app.gateway.factory.create_service_instance",
+        "app.gateway._get_service",
         return_value=service
     )
 
     response = client.post("/api/process-job?service=mock&job=mock")
 
-    assert response.status_code == 200
-    assert response.json() == {"job_type": "mock", "file": "mock_file"}
     service.process_job.assert_called_once()
     service.export_job.assert_called_once()
+    assert response.status_code == 200
+    assert response.json() == {"job_type": "mock", "file": "mock_file"}

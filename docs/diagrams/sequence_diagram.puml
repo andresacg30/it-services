@@ -5,16 +5,18 @@ participant APIGateway
 participant Factory
 participant BaseService
 participant DocumentService
+participant BaseJob
 participant PDFToWord
 
-DocumentService -> Factory: register("pdf-to-word", DocumentService)
-Client -> APIGateway: POST /api/process-job?job-type=pdf-to-word
+DocumentService -> Factory: register("document", DocumentService)
+Client -> APIGateway: POST /api/process-job?service=document&job-type=pdf-to-word
 APIGateway -> Factory: create_service_instance("pdf-to-word")
-APIGateway -> BaseService: process_file("pdf-to-word")
-BaseService -> PDFToWord: process_file("pdf-to-word")
+BaseJob -> DocumentService: register_job("pdf-to-word", PDFToWord)
+APIGateway -> DocumentService: process_file("pdf-to-word", file)
+DocumentService -> PDFToWord: process(file)
 
 activate PDFToWord
-PDFToWord -> PDFToWord: export_file()
+PDFToWord -> PDFToWord: finish()
 deactivate PDFToWord
 
 DocumentService <-- PDFToWord: File Converted

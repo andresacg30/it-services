@@ -7,69 +7,69 @@ class APIGateway {
 class Factory {
   + register()
   + create_service_instance()
+  + get_services()
 }
 
 class BaseService {
+  {abstract} + register_jobs()
   {abstract} + process_job()
   {abstract} + export_job()
+  {abstract} + get_jobs()
 }
 
 class DocumentService {
-  + process_job()
-  + export_job()
 }
 
 class AudioService {
-  + process_job()
-  + export_job()
 }
 
 class TranslationService {
-  + process_job()
-  + export_job()
 }
 
 class UserInfoService {
-  + process_job()
-  + export_job()
+
 }
 
-class PDFToWordService {
-  + process_job()
-  + export_job()
+class BaseJob{
+  {abstract} + process()
+  {abstract} + finish()
 }
 
-class PDFToJPGService {
-  + process_job()
-  + export_job()
+class PDFToWord {
+
 }
 
-class MP3ToWAVService {
-  + process_job()
-  + export_job()
+class PDFToJPG {
+
 }
 
-class MP3ToTextService {
-  + process_job()
-  + export_job()
+class MP3ToWAV {
+
+}
+
+class MP3ToText {
+
 }
 
 class UserInfo {
-  + process_job()
-  + export_job()
+
 }
 
 APIGateway --> Factory
 Factory --> BaseService
-BaseService <|-- DocumentService
-BaseService <|-- AudioService
-BaseService <|-- TranslationService
-BaseService <|-- UserInfoService
-DocumentService <|-- PDFToWordService
-DocumentService <|-- PDFToJPGService
-AudioService <|-- MP3ToWAVService
-AudioService <|-- MP3ToTextService
-TranslationService <|-- TextToTextService
-UserInfoService <|-- UserInfo
+BaseService -->  DocumentService
+BaseService -->  AudioService
+BaseService -->  TranslationService
+BaseService -->  UserInfoService
+DocumentService -->  BaseJob
+AudioService --> BaseJob
+TranslationService -->  BaseJob
+UserInfoService -->  BaseJob
+BaseJob --> PDFToWord
+BaseJob --> PDFToJPG
+BaseJob --> MP3ToWAV
+BaseJob --> MP3ToText
+BaseJob --> UserInfo
+
 
 @enduml
