@@ -1,7 +1,10 @@
 def test__process_job__returns_400_error__when_no_service_is_provided(
     client
 ):
-    response = client.post("/api/process-job?service=&job=test")
+    response = client.post(
+        "/api/process-job?service=&job=test",
+        files={"file": "mock_file"}
+    )
 
     assert response.status_code == 400
     assert response.json() == {"detail": "No service or job provided"}
@@ -13,7 +16,11 @@ def test__process_job__returns_400_error__when_no_job_is_provided(
     mocker
 ):
     mocker.patch("app.gateway.factory.create_service_instance")
-    response = client.post("/api/process-job?service=test&job=")
+
+    response = client.post(
+        "/api/process-job?service=&job=test",
+        files={"file": "mock_file"}
+    )
 
     assert response.status_code == 400
     assert response.json() == {"detail": "No service or job provided"}
@@ -23,7 +30,10 @@ def test__process_job__returns_400_error__when_no_job_is_provided(
 def test__process_job__returns_400_error__when_no_service_nor_job_is_provided(
     client
 ):
-    response = client.post("/api/process-job?service=&job=")
+    response = client.post(
+        "/api/process-job?service=&job=test",
+        files={"file": "mock_file"}
+    )
 
     assert response.status_code == 400
     assert response.json() == {"detail": "No service or job provided"}
@@ -33,8 +43,10 @@ def test__process_job__returns_400_error__when_no_service_nor_job_is_provided(
 def test__process_job__returns_400_error__when_service_not_found(
     client,
 ):
-
-    response = client.post("/api/process-job?service=not_found&job=test")
+    response = client.post(
+        "/api/process-job?service=&job=test",
+        files={"file": "mock_file"}
+    )
 
     assert response.status_code == 400
     assert response.json() == {"detail": "Invalid service name"}
@@ -60,4 +72,4 @@ def test__process_job__returns_file__when_job_type_found(
     service.process_job.assert_called_once()
     service.export_job.assert_called_once()
     assert response.status_code == 200
-    assert response.json() == {"job_type": "mock", "file": "mock_file"}
+    assert response.json() == {"job_type": MockerService.name, "file": "mock_file"}

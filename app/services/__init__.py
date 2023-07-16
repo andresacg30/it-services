@@ -6,7 +6,7 @@ from .document_service.document_service import DocumentService
 
 
 services_to_register = {
-    "document": DocumentService,
+    DocumentService.name: DocumentService,
 }
 
 

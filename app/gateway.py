@@ -1,4 +1,5 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile
+from fastapi.responses import FileResponse
 
 from app.services import register_services
 from app.services.base_config import BaseService
@@ -25,14 +26,17 @@ async def register_app_services():
 
 
 @app.post("/api/process-job")
-async def process_job(service: str, job: str):
+async def process_job(service: str, job: str, file: UploadFile):
     if not service or not job:
         raise HTTPException(status_code=400, detail="No service or job provided")
     service_instance: BaseService = _get_service(service_name=service)
     try:
         service_instance.register_jobs()
-        service_instance.process_job(job=job, file=job)
-        file = service_instance.export_job()
-        return {"job_type": job, "file": file}
+        service_instance.process_job(job=job, file=file)
+        finished_file = service_instance.export_job()
+        new_filename = file.filename.replace(".pdf", ".docx")
+        return FileResponse(finished_file, filename=new_filename)
     except JobNotImplementedError as e:
         raise HTTPException(status_code=400, detail=str(e))
+    finally:
+        service_instance.clean_up()

@@ -4,7 +4,11 @@ from app.services.base_config import BaseService, BaseJob
 
 
 class MockService(BaseService):
-    def register_jobs(self) -> None:
+    name = "mock"
+    finished_file = None
+    jobs_to_register = {}
+
+    def register_jobs(self):
         pass
 
     def process_job(self, job, file):
@@ -18,6 +22,9 @@ class MockService(BaseService):
 
 
 class MockJob(BaseJob):
+    name = "mock_job"
+    file = None
+
     def process(self, file):
         pass
 
