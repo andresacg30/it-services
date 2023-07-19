@@ -31,6 +31,8 @@ class DocumentService(BaseService):
         self.finished_file = selected_job.finish()
 
     def export_job(self) -> str:
+        if not self.finished_file:
+            raise FileNotFoundError("No file to export")
         with tempfile.NamedTemporaryFile(delete=False) as temp_file:
             with open(self.finished_file, "rb") as f:
                 temp_file.write(f.read())
@@ -41,4 +43,5 @@ class DocumentService(BaseService):
 
     def clean_up(self) -> None:
         if self.finished_file:
+            self.finished_file = None
             os.remove(self.finished_file)

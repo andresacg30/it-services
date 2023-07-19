@@ -44,7 +44,7 @@ def test__process_job__returns_400_error__when_service_not_found(
     client,
 ):
     response = client.post(
-        "/api/process-job?service=&job=test",
+        "/api/process-job?service=test&job=test",
         files={"file": "mock_file"}
     )
 
@@ -56,20 +56,24 @@ def test__process_job__returns_400_error__when_service_not_found(
 def test__process_job__returns_file__when_job_type_found(
     client,
     mocker,
-    MockerService
+    MockerService,
+    mocker_file
 ):
     service = mocker.create_autospec(MockerService)
 
     service.process_job.return_value = None
-    service.export_job.return_value = "mock_file"
+    service.export_job.return_value = mocker_file.name
     mocker.patch(
         "app.gateway._get_service",
         return_value=service
     )
 
-    response = client.post("/api/process-job?service=mock&job=mock")
+    response = client.post(
+        "/api/process-job?service=mock&job=mock",
+        files={"file": "file"}
+    )
 
     service.process_job.assert_called_once()
     service.export_job.assert_called_once()
+    service.clean_up.assert_called_once()
     assert response.status_code == 200
-    assert response.json() == {"job_type": MockerService.name, "file": "mock_file"}

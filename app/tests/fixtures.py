@@ -1,4 +1,7 @@
 import pytest
+import tempfile
+
+from fastapi import UploadFile
 
 from app.services.base_config import BaseService, BaseJob
 
@@ -40,3 +43,24 @@ def MockerService():
 @pytest.fixture
 def MockerJob():
     return MockJob
+
+
+@pytest.fixture
+def mocker_file():
+    with tempfile.NamedTemporaryFile(delete=False) as f:
+        yield f
+
+
+@pytest.fixture
+def mocker_pdf_file(mocker, mocker_file):
+    mocker_pdf_file = mocker.create_autospec(UploadFile)
+    mocker_pdf_file.filename = "mock_file.pdf"
+    mocker_pdf_file.file = mocker_file
+    return mocker_pdf_file
+
+
+@pytest.fixture
+def mocker_docx_file(mocker):
+    mocker_docx_file = mocker.create_autospec(UploadFile)
+    mocker_docx_file.filename = "./app/mock_file.docx"
+    return mocker_docx_file
